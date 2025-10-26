@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>A Personalized Creation for Purba 💖</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        /* Existing CSS code is preserved here */
+        :root{--panel-w:300px;--accent:#ff69b4;--text:#00faff}
+        html,body{height:100%;margin:0;background:#000;color:#fff;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Android Emoji';overflow:hidden;}
+        h1{position:fixed;top:12px;left:0;right:0;text-align:center;color:var(--accent);z-index:1200;margin:0;font-size:1.4rem;text-shadow:0 0 6px var(--accent)}
+        #scene{position:relative;width:100vw;height:100vh;overflow:hidden;background:#000;z-index:1}
+        .text,.uploadedImage,.letter{position:absolute;user-select:none;cursor:grab;transition:transform .22s ease,opacity .2s,left .01s linear,top .01s linear}
+        .text,.letter{color:var(--text);font-weight:700;font-size:1.35rem;text-shadow:0 0 6px var(--text);pointer-events:auto;z-index:50;display:inline-block;}
+        .text.letter-parent{opacity:0 !important;pointer-events:none;left:-9999px !important;top:-9999px !important;}
+        .uploadedImage{max-width:110px;max-height:110px;border-radius:10px;z-index:60;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+        .uploadedImage.enlarged{position:fixed !important;left:50% !important;top:50% !important;transform:translate(-50%,-50%) scale(6) !important;z-index:200;cursor:zoom-out !important}
+        .heart{position:absolute;font-size:1rem;opacity:.85;filter:drop-shadow(0 0 8px rgba(255,255,255,.06))}
+        .music-toggle-btn{position:fixed;top:15px;right:60px;background:none;border:none;cursor:pointer;font-size:28px;padding:0;z-index:1200;color:#fff;text-shadow:0 0 5px rgba(0,255,255,0.7);}
+        .music-toggle-btn.playing{color:#00ffff;text-shadow:0 0 8px #00ffff,0 0 12px #00ffff;}
+        #hamburger{position:fixed;left:12px;top:10px;z-index:1200;width:38px;height:34px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer}
+        .bar{height:5px;background:var(--accent);border-radius:4px}
+        #sideMenu{position:fixed;left:calc(-1*var(--panel-w));top:0;width:var(--panel-w);height:100%;background:rgba(0,0,0,.96);z-index:1199;transition:left .28s;overflow-y:auto;padding:56px 14px 24px;box-sizing:border-box;}
+        .menuItem{padding:12px 8px;border-bottom:1px solid rgba(255,255,255,.04);color:#fff;cursor:pointer}
+        .menuItem:hover{background:linear-gradient(90deg,rgba(255,105,180,.06),rgba(0,255,255,.02))}
+        #controls{display:none;flex-direction:column;margin-top:12px;}
+        #controls label{display:block;margin:8px 0 6px;font-size:13px;color:#ddd}
+        #controls input[type="text"],#controls select,#controls input[type="number"],#controls input[type="password"]{width:100%;padding:8px;border-radius:6px;border:none;background:#111;color:#fff;box-sizing:border-box;}
+        #controls input[type="range"]{width:100%}
+        #controls button{width:100%;padding:10px;margin-top:8px;background:var(--accent);border:none;color:#000;font-weight:700;border-radius:8px;cursor:pointer}
+        #multiSelectList{display:flex;flex-direction:column;gap:6px;max-height:150px;overflow-y:auto;padding-right:6px}
+        .ms-row{display:flex;gap:8px;align-items:center}
+        .ms-row label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px}
+        #livePreviewBox{margin-top:10px;padding:10px;border:1px dashed var(--text);background:rgba(0,0,0,0.4);border-radius:6px;min-height:40px;display:flex;align-items:center;justify-content:center;text-align:center;}
+        #livePreviewText{color:var(--text);font-weight:700;font-size:1.2rem;text-shadow:0 0 4px var(--text);word-wrap:break-word;max-width:100%;}.app-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:5000;display:none;justify-content:center;align-items:center;}.modal-container{background:#1a1a1a;padding:0;border-radius:12px;width:90%;max-width:480px;box-shadow:0 0 30px rgba(0,255,255,0.6);border:1px solid #00ffff;display:flex;flex-direction:column;}.modal-content-area{padding:25px;overflow-y:auto;}
+        #shareContent{background:#111;padding:25px;border-radius:12px;width:90%;max-width:450px;box-shadow:0 0 20px rgba(255,105,180,0.5);}
+        #shareContent h2{color:var(--text);text-shadow:0 0 5px var(--text);text-align:center;margin-top:0;margin-bottom:20px;}
+        .share-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+        .share-grid button,#qrCodeBtn,#downloadQrBtn{padding:12px;border-radius:8px;font-weight:600;cursor:pointer;border:1px solid rgba(255,255,255,0.1);transition:background-color 0.2s;}
+        #copyLinkBtn,#qrCodeBtn{background:#444;color:#fff;}
+        #copyLinkBtn:hover,#qrCodeBtn:hover{background:#555;}
+        #whatsappShareBtn{background:#25D366;color:#fff;}
+        #facebookShareBtn{background:#1877F2;color:#fff;}
+        #twitterShareBtn{background:#1DA1F2;color:#fff;}
+        #instaShareBtn{background:#C13584;color:#fff;}
+        #qrCodeContainer{display:flex;flex-direction:column;align-items:center;justify-content:center;margin:20px 0;padding:15px;background:rgba(255,255,255,0.05);border-radius:10px;box-shadow:inset 0 0 10px rgba(0,255,255,0.2);}
+        #heartQrCanvasContainer{position:relative;width:200px;height:200px;display:flex;justify-content:center;align-items:center;overflow:hidden;}
+        #qrCanvas{width:100%;height:100%;}
+        #downloadQrBtn{margin-top:10px;background:var(--accent);color:#000;font-weight:700;border:none;width:100%;}
+        .auth-buttons button{width:100%;padding:10px;margin-bottom:10px;border:none;border-radius:6px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;}.auth-buttons button:hover{opacity:0.9;}#googleAuth{background:#fff;color:#000;}.social-icon{margin-right:10px;font-size:1.2em;}.separator{text-align:center;margin:15px 0;font-size:0.9em;color:#999;position:relative;}.separator::before,.separator::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:#333;}.separator::before{left:0;}.separator::after{right:0;}.pricing-grid{display:flex;justify-content:center;margin-bottom:20px;}.plan-card{background:#222;padding:15px;border-radius:10px;border:2px solid transparent;text-align:center;cursor:pointer;transition:all 0.2s;}.plan-card.recommended{border-color:var(--accent);box-shadow:0 0 15px rgba(255,105,180,0.4);}.plan-card h4{margin-top:0;color:var(--accent);}.plan-card .price{font-size:2em;font-weight:800;color:#fff;margin:5px 0 10px;}.plan-card ul{list-style:none;padding:0;text-align:left;font-size:0.9em;}.plan-card ul li{margin-bottom:5px;}.plan-card ul li::before{content:'✓ ';color:#00ff00;font-weight:700;margin-right:5px;}#simulatePaymentBtn,#subscribeNowBtn{background:#00ff00;color:#000;font-weight:700;border:none;border-radius:8px;padding:12px;width:100%;cursor:pointer;margin-top:15px;}#cancelPaymentBtn{background:#555;color:#fff;margin-top:10px;}#paymentOverlay{padding:25px;display:flex;flex-direction:column;align-items:center;}
+    </style>
+</head>
+<body>
+    <h1 id="mainTitle">A Personalized Creation for Purba 💖</h1>
+    <button id="musicToggle" class="music-toggle-btn">🔊</button>
+    <audio id="websiteMusic" loop></audio>
+    <div id="hamburger" title="Menu (tap)">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <div id="sideMenu" aria-hidden="true">
+        <div class="menuItem" id="loginSignupOption">🔑 Login / Signup</div>
+        <div class="menuItem" id="subscriptionOption">💰 Subscription Plans</div>
+        <div class="menuItem" id="logoutOption" style="display: none; color: #ff5555;">🔒 Logout</div>
+        <div class="menuItem" id="uploadOption">🔼 Upload Photo</div>
+        <div class="menuItem" id="addMusicButton">🎵 ADD Audio (MP3/WAV)</div>
+        <input type="file" id="musicFile" accept="audio/*" style="display: none;">
+        <div class="menuItem" id="textControlOption">✍️ Element Controls & Animations</div>
+        <div class="menuItem" id="sendOption">📤 Share View-Only Link</div>
+        <div id="controls">
+            <h2>Scene Title Editor</h2>
+            <label>Edit Scene Title</label>
+            <input id="editTitleContent" type="text" placeholder="New Title..." value="A Personalized Creation for Purba 💖">
+            <button id="editTitleBtn">Update Title</button>
+            <hr style="border:none;border-top:1px solid rgba(255,255,255,.04);margin:10px 0">
+            <h2>Element Controls</h2>
+            <label>Select elements for animation (multi-select)</label>
+            <div id="multiSelectList"></div>
+            <button id="selectAllBtn" style="background:#0f0f0f;color:#fff">Select All</button>
+            <label>Animation Style</label>
+            <select id="animationStyle">
+                <option value="floating">Floating</option>
+                <option value="circle">Circle</option>
+                <option value="earth">Earth Sphere (Fixed on Sphere)</option>
+                <option value="zoom">Zoom In/Out</option>
+                <option value="wave">Wave</option>
+                <option value="spiral">Spiral</option>
+                <option value="rubLetters">Rub & Scatter Letters (Earth-Rotate)</option>
+                <option value="rub">Rub & Return (Push Nearby)</option>
+                <option value="none">None</option>
+            </select>
+            <label>Speed</label>
+            <input id="animationSpeed" type="range" min="1" max="10" value="3">
+            <label>Radius (Circle/Earth)</label>
+            <input id="animationRadius" type="range" min="40" max="450" value="150">
+            <button id="applyAnimationBtn">Apply Animation to Selected</button>
+            <hr style="border:none;border-top:1px solid rgba(255,255,255,.04);margin:10px 0">
+            <label>Add New Text</label>
+            <input id="newTextContent" type="text" placeholder="Enter text…">
+            <button id="addTextBtn">Add Text</button>
+            <label>Edit Existing Text</label>
+            <select id="selectText"></select>
+            <input id="editTextContent" type="text" placeholder="New content…">
+            <div id="livePreviewBox"><span id="livePreviewText">Live Preview Here</span></div>
+            <button id="editTextBtn">Update Selected Text</button>
+            <button id="removeTextBtn" style="background:#bb0000;color:#fff">Remove Selected Element</button>
+            <p class="muted" style="margin-top:10px">Tip: Drag items in the scene to reposition (some animations override dragging).</p>
+        </div>
+    </div>
+    <div id="shareModal" class="app-modal" style="display:none">
+        <div id="shareContent">
+            <h2>Share Your Personal Creation 💌</h2>
+            <p class="muted" style="text-align:center; margin-bottom: 20px;">Use the unique link or QR code to share a read-only view with Purba.</p>
+            <div class="share-grid">
+                <button id="copyLinkBtn" title="Copy the unique URL to your clipboard">🔗 Copy Link</button>
+                <button id="whatsappShareBtn">🟢 WhatsApp</button>
+                <button id="facebookShareBtn">🔵 Facebook</button>
+                <button id="twitterShareBtn">🐦 X (Twitter)</button>
+                <button id="instaShareBtn">📸 Instagram</button>
+                <button id="qrCodeBtn" title="Generate a beautiful heart-shaped QR code">💖 Generate QR</button>
+            </div>
+            <div id="qrCodeContainer" style="display:none">
+                <p class="muted" style="margin-top:0">Scan the Heart to view the scene 📱</p>
+                <div id="heartQrCanvasContainer"><canvas id="qrCanvas" width="200" height="200"></canvas></div>
+                <button id="downloadQrBtn" style="display:none;">⬇️ Download QR Code (PNG)</button>
+            </div>
+            <button id="closeModalBtn" style="background: #555; margin-top: 15px; width: 100%;">Close</button>
+        </div>
+    </div>
+    <div id="authModal" class="app-modal" style="display:none">
+        <div class="modal-container">
+            <div id="authSection" class="modal-content-area" style="display:block;">
+                <h3>🔑 Sign In or Create Account</h3>
+                <div class="auth-buttons">
+                    <button id="googleAuth"><span class="social-icon">🇬</span> Continue with Google</button>
+                    <button id="facebookAuth" style="background:#1877F2;color:#fff;border:none;"><span class="social-icon">🇫</span> Continue with Facebook</button>
+                </div>
+                <div class="separator">OR</div>
+                <div id="emailLoginSection">
+                    <p class="muted" style="margin-top:0;">Sign in with Email</p>
+                    <input type="text" id="emailInput" placeholder="Email address" value="test@user.com" style="width:100%;padding:10px;border-radius:6px;border:none;background:#222;color:#fff;margin-bottom:15px;">
+                    <button id="loginBtn">Next (Simulated Login)</button>
+                    <p class="muted" style="text-align:center;margin-top:15px;">Don't have an account? <span id="signupLink" style="color:var(--accent);cursor:pointer;font-weight:700;">Sign up</span></p>
+                </div>
+            </div>
+            <button id="closeAuthModalBtn" style="background:#555;margin-top:20px;width:100%;">Close</button>
+        </div>
+    </div>
+    <div id="subscriptionModal" class="app-modal" style="display:none">
+        <div class="modal-container">
+            <div id="subscriptionSection" class="modal-content-area" style="display:block;">
+                <h3>Unlock Full Features: Choose Your Plan</h3>
+                <p class="muted" id="subModalSubtitle">Access unlimited text elements, image uploads, and exclusive animations.</p>
+                <div class="pricing-grid">
+                    <div class="plan-card recommended" data-price="29" data-name="Monthly">
+                        <h4>Monthly Access</h4>
+                        <p class="price">₹29<span style="font-size:0.9rem;font-weight:400;">/mo</span></p>
+                        <p class="muted">Best value for short-term use.</p>
+                        <ul><li>Unlimited Text Elements</li><li>Photo Uploads Enabled</li><li>All Animations Unlocked</li></ul>
+                    </div>
+                </div>
+                <div id="couponSection">
+                    <label class="muted" style="display:block;margin-bottom:5px;">Have a Promo Code?</label>
+                    <input type="text" id="couponCodeInput" placeholder="Enter Coupon Code" style="color:#fff; width: 100%; padding: 8px; border-radius: 6px; border: none; background: #111; margin-bottom: 8px;">
+                    <button id="couponApplyBtn">Apply</button>
+                    <p id="couponStatus" class="muted" style="font-size:12px;margin-top:5px;min-height:15px;"></p>
+                </div>
+                <p id="finalPaymentText" style="text-align:center;font-size:1.1rem;font-weight:700;margin-top:20px;">Total Due Today: <span id="paymentAmount" style="color:var(--accent);">₹29</span></p>
+                <button id="subscribeNowBtn">Secure Checkout</button>
+            </div>
+            <div id="paymentOverlay" style="display:none;">
+                <h3>Simulated Payment Gateway</h3>
+                <p style="margin-bottom:20px;">Please select your preferred payment method to pay <span id="paymentOverlayAmount" style="color:var(--accent);font-weight:700;">₹29</span>.</p>
+                <div style="width:80%; margin: 0 auto; text-align: left;">
+                    <label style="display:block; margin-bottom:10px;"><input type="radio" name="paymentMethod" value="upi" checked> UPI / Google Pay</label>
+                    <label style="display:block; margin-bottom:10px;"><input type="radio" name="paymentMethod" value="card"> Credit/Debit Card</label>
+                    <label style="display:block; margin-bottom:10px;"><input type="radio" name="paymentMethod" value="netbanking"> Net Banking</label>
+                </div>
+                <p class="muted" style="margin-top:20px;">(This is a simulation. Click below to complete the transaction.)</p>
+                <button id="simulatePaymentBtn">Simulate Payment (Complete Transaction)</button>
+                <button id="cancelPaymentBtn">Cancel & Go Back</button>
+            </div>
+            <button id="closeSubModalBtn" style="background:#555;margin-top:20px;width:100%;">Close</button>
+        </div>
+    </div>
+    <input id="fileInput" type="file" accept="image/*" multiple style="display:none">
+    <div id="scene" aria-label="creative scene"></div>
+    <div id="viewNotice" style="display:none"></div>
+    <script>
+        // TinyURL API Key
+        const TINYURL_API_KEY = 'dstNpTpzeMhVHlFTNyWaWldT6W4HBeSNRXDjzICKKWgsTFWHZQNqFyxLrXW0';
+        
+        const $ = id => document.getElementById(id);
+        const scene = $('scene');
+        const sideMenu = $('sideMenu');
+        const hamburger = $('hamburger');
+        const logoutOption = $('logoutOption');
+        const controls = $('controls');
+        const emailInput = $('emailInput');
+        const signupLink = $('signupLink');
+        const authModal = $('authModal');
+        const subscriptionModal = $('subscriptionModal');
+        const loginSignupOption = $('loginSignupOption');
+        const subscriptionOption = $('subscriptionOption');
+        const musicFileInput = $('musicFile');
+        const musicToggleBtn = $('musicToggle');
+        const websiteMusic = $('websiteMusic');
+        const MAX_MUSIC_FILE_SIZE_MB = 10; // Increased limit for backend upload
+        
+        let isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+        let userEmail = localStorage.getItem('userEmail') || 'guest';
+        let isSubscribed = isAuthenticated ? (localStorage.getItem(`isSubscribed_${userEmail}`) === 'true') : false;
+        let demoUsed = localStorage.getItem('demoUsed') === 'true';
+        let currentSubscriptionPrice = 29;
+        let elementsWithAnimation = [];
+        let pointer = {x:0,y:0,isDown:false};
+        let SHARE_URL = '';
+        let viewOnlyData = null;
+        
+        const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+        
+        document.addEventListener('DOMContentLoaded', init);
+        
+        function init(){
+            if (isAuthenticated && userEmail === 'guest') {
+                simulateLogout();
+                return;
+            }
+            $('editTitleContent').value = $('mainTitle').textContent;
+            updateSubscriptionDisplay();
+            
+            const baseTexts = ["I Love You Purba 💖💙","Forever in my heart 💞","You are my world 🌎💗","My Dear one 💓","You & Me 💑","Always with you 💖"];
+            for (let i=0;i<10;i++){
+                createText(baseTexts[i % baseTexts.length], true);
+            }
+            
+            $('scene').style.width = window.innerWidth + 'px';
+            $('scene').style.height = window.innerHeight + 'px';
+            
+            const heartsColors = ["💖","💙","💚","💛","💜","🧡","❤️"];
+            for (let i=0;i<40;i++){
+                const h = document.createElement('div');
+                h.className = 'heart';
+                h.textContent = heartsColors[Math.floor(Math.random()*heartsColors.length)];
+                h.style.left = Math.random()*(scene.clientWidth-20) + 'px';
+                h.style.top = Math.random()*(scene.clientHeight-20) + 'px';
+                h.style.opacity = 0.45 + Math.random()*0.6;
+                scene.appendChild(h);
+            }
+            
+            setupMenuListeners();
+            setupControlListeners();
+            setupAuthListeners();
+            setupShareListeners();
+            setupPointerInteractions();
+            setupMusicListeners();
+            requestAnimationFrame(loop);
+            updateElementList();
+            
+            if ($('selectText').options.length > 0) {
+                $('selectText').dispatchEvent(new Event('change'));
+            } else {
+                $('livePreviewText').textContent = 'No Text Elements';
+            }
+            
+            window.addEventListener('resize', ()=> {
+                scene.style.width = window.innerWidth + 'px';
+                scene.style.height = window.innerHeight + 'px';
+            });
+            
+            const params = new URLSearchParams(location.search);
+            const shareParam = params.get('share');
+            
+            if (shareParam) {
+                try {
+                    viewOnlyData = JSON.parse(decodeURIComponent(shareParam));
+                    loadFromShare(viewOnlyData);
+                    startViewer();
+                    return;
+                } catch(e){
+                    console.warn('Invalid share parameter');
+                }
+            }
+
+            // Load persisted image/audio URLs (now uses unique keys)
+            const storedImageUrls = JSON.parse(localStorage.getItem('uploadedImageUrls') || '[]');
+            storedImageUrls.forEach(url => createImageFromCloudinaryUrl(url));
+            
+            const storedMusicUrl = localStorage.getItem('currentMusicURL');
+            if (storedMusicUrl) {
+                websiteMusic.src = storedMusicUrl;
+                const storedMusicName = localStorage.getItem('currentMusicName') || 'Music Loaded';
+                musicToggleBtn.setAttribute('title', storedMusicName);
+            } else {
+                musicToggleBtn.setAttribute('title', 'No Music Set');
+            }
+        }
+        
+        function setupMenuListeners(){
+            hamburger.addEventListener('click', ()=> {
+                const sideMenuWidth = getComputedStyle(sideMenu).width;
+                sideMenu.style.left = (sideMenu.style.left === '0px') ? `-${sideMenuWidth}` : '0px';
+            });
+            document.addEventListener('click', (e)=>{
+                if (sideMenu.style.left === '0px' && !sideMenu.contains(e.target) && e.target !== hamburger && !hamburger.contains(e.target)) {
+                    sideMenu.style.left = `-${getComputedStyle(sideMenu).width}`;
+                }
+            });
+            $('textControlOption').addEventListener('click', ()=>{
+                controls.style.display = controls.style.display === 'flex' ? 'none' : 'flex';
+                sideMenu.style.left = `-${getComputedStyle(sideMenu).width}`;
+                updateElementList();
+                if ($('selectText').options.length > 0) {
+                    $('selectText').dispatchEvent(new Event('change'));
+                }
+            });
+            $('uploadOption').addEventListener('click', onUploadClick);
+            // File input's change listener now directly calls the Cloudinary upload function
+            $('fileInput').addEventListener('change', onImageFilesSelected); 
+            // Changed this to call the new sharing handler function
+            $('sendOption').addEventListener('click', shareCreationHandler);
+            
+            loginSignupOption.addEventListener('click', showAuthModal);
+            subscriptionOption.addEventListener('click', showSubscriptionModal);
+            logoutOption.addEventListener('click', simulateLogout);
+            
+            $('addMusicButton').addEventListener('click', ()=>{musicFileInput.click();});
+            // Audio input's change listener now directly calls the Cloudinary upload function
+            musicFileInput.addEventListener('change', onMusicFileSelected); 
+        }
+        
+        function setupMusicListeners(){
+            // Music URL is loaded in init()
+            musicToggleBtn.addEventListener('click', toggleMusicPlayback);
+        }
+        
+        // --- Cloudinary Upload Logic for Audio (Updated) ---
+        async function onMusicFileSelected(event){
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const MAX_FILE_SIZE_BYTES = MAX_MUSIC_FILE_SIZE_MB * 1024 * 1024;
+            if (file.size > MAX_FILE_SIZE_BYTES) {
+                alert(`❌ Audio file size should not exceed ${MAX_MUSIC_FILE_SIZE_MB} MB. Please select a smaller file.`);
+                musicFileInput.value = null;
+                return;
+            }
+            
+            musicToggleBtn.textContent = '...Uploading...';
+            musicToggleBtn.style.color = 'yellow';
+
+            const formData = new FormData();
+            formData.append('mediaFile', file);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const publicUrl = data.publicUrl;
+                    websiteMusic.src = publicUrl;
+                    localStorage.setItem('currentMusicURL', publicUrl);
+                    localStorage.setItem('currentMusicName', file.name);
+                    
+                    alert(`🎵 Audio: "${file.name}" uploaded to Cloudinary and set successfully! Click the speaker icon to play.`);
+                    websiteMusic.pause();
+                    websiteMusic.currentTime = 0;
+                    musicToggleBtn.textContent = '🔊';
+                    musicToggleBtn.style.color = '#00ffff';
+                    musicToggleBtn.classList.remove('playing');
+                    musicToggleBtn.setAttribute('title', file.name);
+
+                    // If a user is not logged in, we reset the limit check for the demo
+                    if (!isAuthenticated || userEmail === 'guest') {
+                        localStorage.setItem('musicDemoUsed', 'true');
+                    }
+                } else {
+                    alert(`❌ Audio upload failed: ${data.message}`);
+                    musicToggleBtn.textContent = '🔊';
+                    musicToggleBtn.style.color = '#fff';
+                }
+
+            } catch (error) {
+                console.error('Frontend Audio Upload Error:', error);
+                alert('❌ Network or server error during audio upload.');
+                musicToggleBtn.textContent = '🔊';
+                musicToggleBtn.style.color = '#fff';
+            } finally {
+                musicFileInput.value = null; // Reset input
+            }
+        }
+        
+        function toggleMusicPlayback(){
+            if (!websiteMusic.src || websiteMusic.src === location.href) {
+                alert("❌ No audio loaded. Please use the '🎵 ADD Audio (MP3/WAV)' option in the menu first.");
+                return;
+            }
+            
+            if (websiteMusic.paused) {
+                websiteMusic.play().then(() => {
+                    musicToggleBtn.textContent = '🔈';
+                    musicToggleBtn.classList.add('playing');
+                }).catch(error => {
+                    console.error("Music Play Failed:", error);
+                    alert("Playback prevented by browser's auto-play policy. Try clicking again, or ensure audio is allowed.");
+                    musicToggleBtn.textContent = '🔊';
+                    musicToggleBtn.classList.remove('playing');
+                });
+            } else {
+                websiteMusic.pause();
+                musicToggleBtn.textContent = '🔊';
+                musicToggleBtn.classList.remove('playing');
+            }
+        }
+        
+        function setupControlListeners(){
+            $('applyAnimationBtn').addEventListener('click', applyAnimationToSelected);
+            $('selectAllBtn').addEventListener('click', ()=> {
+                [...$('multiSelectList').querySelectorAll('input[type=checkbox]')].forEach(cb=>cb.checked=true);
+            });
+            $('addTextBtn').addEventListener('click', ()=> {
+                if (!checkSubscriptionGating()) return;
+                const v = $('newTextContent').value.trim();
+                if (!v) return alert('Please enter text content.');
+                createText(v);
+                $('newTextContent').value='';
+                updateElementList();
+            });
+            $('editTextBtn').addEventListener('click', updateTextContent);
+            $('editTextContent').addEventListener('input', updateLivePreview);
+            $('selectText').addEventListener('change', updateEditFields);
+            $('removeTextBtn').addEventListener('click', removeSelectedElement);
+            $('editTitleBtn').addEventListener('click', ()=> {
+                const v = $('editTitleContent').value.trim();
+                if (!v) return alert('Please enter a title.');
+                $('mainTitle').textContent = v;
+            });
+        }
+        
+        function setupAuthListeners(){
+            $('closeAuthModalBtn').addEventListener('click', ()=> {authModal.style.display = 'none';});
+            $('closeSubModalBtn').addEventListener('click', ()=> {subscriptionModal.style.display = 'none';});
+            
+            $('loginBtn').addEventListener('click', () => {
+                const email = $('emailInput').value.trim();
+                if (!email) {
+                    alert('Please enter an email address for simulated login.');
+                    return;
+                }
+                simulateAuth(true, email);
+            });
+            signupLink.addEventListener('click', () => alert("Simulating a redirect to a dedicated Signup page. For this demo, we'll proceed to login."));
+            $('googleAuth').addEventListener('click', ()=> simulateAuth(true, 'user_google@email.com'));
+            $('facebookAuth').addEventListener('click', ()=> simulateAuth(true, 'user_facebook@email.com'));
+            
+            document.querySelectorAll('.plan-card').forEach(card => {
+                card.addEventListener('click', () => selectPlan(card));
+            });
+            
+            $('couponApplyBtn').addEventListener('click', applyCoupon);
+            $('subscribeNowBtn').addEventListener('click', openPaymentOverlay);
+            $('simulatePaymentBtn').addEventListener('click', simulateSubscription);
+            $('cancelPaymentBtn').addEventListener('click', closePaymentOverlay);
+        }
+        
+        function setupShareListeners(){
+            $('closeModalBtn').addEventListener('click', ()=> {
+                $('shareModal').style.display = 'none';
+                $('qrCodeContainer').style.display = 'none';
+                $('downloadQrBtn').style.display = 'none';
+                $('qrCodeBtn').textContent = '💖 Generate QR';
+                // Reset the button text after sharing is complete or modal is closed
+                $('copyLinkBtn').textContent = '🔗 Copy Link';
+            });
+            
+            $('qrCodeBtn').addEventListener('click', toggleQrCode);
+            $('downloadQrBtn').addEventListener('click', downloadQrCode);
+            
+            // Primary sharing button handler - will now call the Web Share API or copy the short link
+            $('copyLinkBtn').addEventListener('click', copyShareLink);
+            
+            $('whatsappShareBtn').addEventListener('click', ()=> shareToPlatform('whatsapp'));
+            $('facebookShareBtn').addEventListener('click', ()=> shareToPlatform('facebook'));
+            $('twitterShareBtn').addEventListener('click', ()=> shareToPlatform('twitter'));
+            $('instaShareBtn').addEventListener('click', ()=> alert("For Instagram: Copy the link and share it in your bio or stories, as direct sharing isn't possible from a website."));
+        }
+        
+        function updateSubscriptionDisplay(){
+            loginSignupOption.textContent = isAuthenticated ? `✅ Logged In (${userEmail})` : '🔑 Login / Signup';
+            if (isSubscribed) {
+                subscriptionOption.textContent = '👑 Subscribed (Active)';
+            } else {
+                subscriptionOption.textContent = '💰 Subscription Plans';
+            }
+            logoutOption.style.display = isAuthenticated ? 'block' : 'none';
+            
+            if (isSubscribed) {
+                $('addTextBtn').textContent = 'Add Text';
+                $('addTextBtn').style.backgroundColor = 'var(--accent)';
+            } else if (demoUsed) {
+                $('addTextBtn').textContent = 'Add Text (Limit Reached)';
+                $('addTextBtn').style.backgroundColor = '#880000';
+            } else {
+                $('addTextBtn').textContent = 'Add Text (1 Demo Use Left)';
+                $('addTextBtn').style.backgroundColor = 'var(--accent)';
+            }
+        }
+        
+        function checkSubscriptionGating(){
+            if (isSubscribed) return true;
+            if (!demoUsed) {
+                markDemoUsed();
+                return true;
+            }
+            alert('Feature Limit Reached. Please subscribe to continue using all features. 🙏');
+            showSubscriptionModal();
+            return false;
+        }
+        
+        function markDemoUsed(){
+            if (!isSubscribed && !demoUsed) {
+                localStorage.setItem('demoUsed', 'true');
+                demoUsed = true;
+                updateSubscriptionDisplay();
+            }
+        }
+        
+        function showAuthModal(){
+            if (isAuthenticated) {
+                alert('You are already logged in as ' + userEmail + '. Use the "Logout" option if you need to switch accounts.');
+                return;
+            }
+            $('emailInput').value = 'test@user.com';
+            authModal.style.display = 'flex';
+        }
+        
+        function showSubscriptionModal(){
+            if (isSubscribed) {
+                alert('You are already subscribed. Enjoy! 🎉');
+                return;
+            }
+            if (!isAuthenticated) {
+                alert('Please login or signup first to view subscription plans and subscribe.');
+                showAuthModal();
+                return;
+            }
+            $('paymentOverlay').style.display = 'none';
+            $('subscriptionSection').style.display = 'block';
+            subscriptionModal.style.display = 'flex';
+            selectPlan(document.querySelector('.plan-card'));
+            applyCoupon();
+        }
+        
+        function simulateAuth(success, email){
+            if (success){
+                const newEmail = email.toLowerCase();
+                if (isAuthenticated && userEmail !== 'guest' && userEmail !== newEmail) {
+                    localStorage.setItem(`isSubscribed_${userEmail}`, isSubscribed);
+                }
+                isAuthenticated = true;
+                userEmail = newEmail;
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userEmail', userEmail);
+                isSubscribed = localStorage.getItem(`isSubscribed_${userEmail}`) === 'true';
+                alert(`Login successful for ${userEmail}!`);
+                authModal.style.display = 'none';
+                updateSubscriptionDisplay();
+                if (subscriptionModal.style.display === 'none' && !isSubscribed) {
+                    showSubscriptionModal();
+                } else if (isSubscribed) {
+                    alert('Welcome back! You are subscribed. Enjoy! 🎉');
+                }
+            }
+        }
+        
+        function simulateLogout(){
+            if (isAuthenticated && userEmail !== 'guest') {
+                localStorage.setItem(`isSubscribed_${userEmail}`, isSubscribed);
+            }
+            isAuthenticated = false;
+            isSubscribed = false;
+            userEmail = 'guest';
+            localStorage.setItem('isAuthenticated', 'false');
+            localStorage.setItem('isSubscribed', 'false');
+            localStorage.setItem('userEmail', userEmail);
+            alert('You have been successfully logged out. Features are now limited.');
+            if (sideMenu.style.left === '0px') {
+                sideMenu.style.left = `-${getComputedStyle(sideMenu).width}`;
+            }
+            updateSubscriptionDisplay();
+        }
+        
+        function selectPlan(selectedCard){
+            document.querySelectorAll('.plan-card').forEach(card => card.classList.remove('recommended'));
+            selectedCard.classList.add('recommended');
+            currentSubscriptionPrice = parseInt(selectedCard.getAttribute('data-price'));
+            applyCoupon();
+        }
+        
+        function applyCoupon(){
+            if (!isAuthenticated) {
+                $('couponStatus').textContent = '❌ Please login first to apply a coupon code.';
+                currentSubscriptionPrice = 29;
+                $('paymentAmount').textContent = `₹${currentSubscriptionPrice}`;
+                $('subscribeNowBtn').textContent = `Secure Checkout - Pay ₹${currentSubscriptionPrice}`;
+                return;
+            }
+            
+            const code = $('couponCodeInput').value.toUpperCase().trim();
+            const basePrice = 29;
+            let finalPrice = basePrice;
+            $('couponStatus').textContent = '';
+            
+            const discountUsedKey = `discountUsed_${userEmail}`;
+            const isDiscountUsed = localStorage.getItem(discountUsedKey) === 'true';
+            
+            if (code === 'DISCOUNT'){
+                if (isDiscountUsed){
+                    $('couponStatus').textContent = `❌ DISCOUNT coupon can only be used once per user (${userEmail}).`;
+                } else {
+                    finalPrice = 1;
+                    $('couponStatus').textContent = '✅ DISCOUNT applied! First month is now ₹1.';
+                }
+            } else if (code === 'SANDIPXPURBAX16X30'){
+                finalPrice = 0;
+                $('couponStatus').textContent = '🎉 SANDIPXPURBAX16X30 applied! Subscription is Free.';
+            } else if (code) {
+                $('couponStatus').textContent = '❌ Invalid or expired coupon code.';
+            }
+            
+            currentSubscriptionPrice = finalPrice;
+            $('paymentAmount').textContent = `₹${currentSubscriptionPrice}`;
+            $('subscribeNowBtn').textContent = finalPrice === 0 ? 'Start Free Subscription' : `Secure Checkout - Pay ₹${currentSubscriptionPrice}`;
+        }
+        
+        function openPaymentOverlay(){
+            if (!isAuthenticated) {
+                alert('Error: Not authenticated. Please login again.');
+                showAuthModal();
+                return;
+            }
+            if (isSubscribed) {
+                alert('You are already subscribed!');
+                return;
+            }
+            $('paymentOverlayAmount').textContent = $('paymentAmount').textContent;
+            $('subscriptionSection').style.display = 'none';
+            $('closeSubModalBtn').style.display = 'none';
+            $('paymentOverlay').style.display = 'flex';
+        }
+        
+        function closePaymentOverlay(){
+            $('paymentOverlay').style.display = 'none';
+            $('subscriptionSection').style.display = 'block';
+            $('closeSubModalBtn').style.display = 'block';
+        }
+        
+        function simulateSubscription(){
+            if (!isAuthenticated) return alert('Error: Not authenticated. Please login again.');
+            
+            const price = currentSubscriptionPrice;
+            if (price === 0) {
+                alert('Payment not required. Subscription Successful! Your account is now FREE! 🎉');
+            } else {
+                alert(`Payment of ₹${price} Successful! Your account is now subscribed! Enjoy! 🥳`);
+                if ($('couponCodeInput').value.toUpperCase().trim() === 'DISCOUNT' && price === 1) {
+                    const discountUsedKey = `discountUsed_${userEmail}`;
+                    localStorage.setItem(discountUsedKey, 'true');
+                }
+            }
+            
+            isSubscribed = true;
+            localStorage.setItem(`isSubscribed_${userEmail}`, 'true');
+            subscriptionModal.style.display = 'none';
+            updateSubscriptionDisplay();
+            
+            $('couponCodeInput').value = '';
+            $('couponStatus').textContent = '';
+            currentSubscriptionPrice = 29;
+            $('paymentAmount').textContent = `₹29`;
+            $('subscribeNowBtn').textContent = `Secure Checkout - Pay ₹29`;
+            closePaymentOverlay();
+        }
+        
+        function removeLetterElements(obj) {
+            if (obj.letters) {
+                obj.letters.forEach(l => {
+                    if (l.el.parentNode) {
+                        scene.removeChild(l.el);
+                    }
+                });
+                obj.letters = null;
+                obj.el.classList.remove('letter-parent');
+                obj.disabledDrag = false;
+                obj.el.style.opacity = 1;
+                obj.el.style.left = obj.origX + 'px';
+                obj.el.style.top = obj.origY + 'px';
+                obj.el.style.transform = 'none';
+            }
+        }
+        
+        function initializeLetters(obj) {
+            removeLetterElements(obj);
+            const originalText = obj.el.textContent;
+            if (!originalText.trim()) return;
+            
+            obj.el.style.opacity = 1;
+            obj.el.style.left = obj.origX + 'px';
+            obj.el.style.top = obj.origY + 'px';
+            obj.el.style.whiteSpace = 'nowrap';
+            obj.el.classList.remove('letter-parent');
+            
+            obj.letters = [];
+            let currentX = obj.origX;
+            
+            const computedStyle = getComputedStyle(obj.el);
+            const wordHeight = parseFloat(computedStyle.fontSize);
+            
+            const tempContainer = document.createElement('span');
+            tempContainer.style.whiteSpace = 'nowrap';
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.visibility = 'hidden';
+            tempContainer.style.fontSize = computedStyle.fontSize;
+            tempContainer.style.fontWeight = computedStyle.fontWeight;
+            tempContainer.style.fontFamily = computedStyle.fontFamily;
+            document.body.appendChild(tempContainer);
+            
+            for (let i = 0; i < originalText.length; i++) {
+                const char = originalText[i];
+                tempContainer.textContent = char;
+                const charWidth = tempContainer.offsetWidth;
+                
+                const letterEl = document.createElement('span');
+                letterEl.textContent = char;
+                letterEl.className = 'letter';
+                
+                const startX = currentX;
+                const startY = obj.origY;
+                letterEl.style.left = startX + 'px';
+                letterEl.style.top = startY + 'px';
+                scene.appendChild(letterEl);
+                
+                obj.letters.push({
+                    el: letterEl, 
+                    origX: startX, 
+                    origY: startY,
+                    theta: Math.random()*Math.PI*2, 
+                    phi: Math.PI*0.3 + (Math.random()*0.8 - 0.4)
+                });
+                currentX += charWidth;
+            }
+            
+            document.body.removeChild(tempContainer);
+            obj.el.classList.add('letter-parent');
+            obj.disabledDrag = true;
+            
+            const wordWidth = currentX - obj.origX;
+            obj.centerW = wordWidth;
+            obj.centerH = wordHeight;
+            obj.origX = obj.origX + wordWidth / 2;
+            obj.origY = obj.origY + wordHeight / 2;
+        }
+        
+        function applyAnimationToSelected(){
+            const style = $('animationStyle').value;
+            const speed = parseInt($('animationSpeed').value) || 3;
+            const radius = parseInt($('animationRadius').value) || 150;
+            const cbs = [...$('multiSelectList').querySelectorAll('input[type=checkbox]')];
+            const selected = cbs.filter(cb=>cb.checked).map(cb=>parseInt(cb.value));
+            
+            if (selected.length === 0){
+                alert('Please select at least one item.');
+                return;
+            }
+            
+            selected.forEach(idx=>{
+                const obj = elementsWithAnimation[idx];
+                if (!obj) return;
+                
+                removeLetterElements(obj);
+                
+                obj.anim.style = style;
+                obj.anim.speed = speed;
+                obj.anim.radius = radius;
+                
+                if (!obj.anim.theta) obj.anim.theta = Math.random()*Math.PI*2;
+                if (!obj.anim.phi) obj.anim.phi = Math.random()*Math.PI;
+                
+                if (style === 'rubLetters') {
+                    if (obj.type === 'text') {
+                        initializeLetters(obj);
+                        obj.disabledDrag = true;
+                    } else {
+                        obj.anim.style = 'none';
+                        obj.disabledDrag = false;
+                        alert("Image: 'Rub & Scatter Letters' animation is only supported for Text elements. Animation reverted to 'None'.");
+                    }
+                } else {
+                    obj.disabledDrag = (style === 'earth');
+                }
+                
+                if (!obj.disabledDrag) {
+                    obj.origX = obj.el.offsetLeft;
+                    obj.origY = obj.el.offsetTop;
+                }
+                obj.pushOffsetX = 0;
+                obj.pushOffsetY = 0;
+            });
+            
+            updateElementList();
+        }
+        
+        function makeDraggable(el){
+            let dragging=false, offsetX=0, offsetY=0;
+            
+            const down = (e)=>{
+                if (e.type === 'mousedown' && e.button !== 0) return;
+                
+                const obj = elementsWithAnimation.find(o=>o.el===el);
+                if (obj && obj.disabledDrag) return;
+                
+                if (el.classList.contains('enlarged')) {
+                    dragging = false;
+                    return;
+                }
+                
+                dragging = true;
+                offsetX = (e.clientX !== undefined ? e.clientX : e.touches[0].clientX) - el.offsetLeft;
+                offsetY = (e.clientY !== undefined ? e.clientY : e.touches[0].clientY) - el.offsetTop;
+                el.style.cursor='grabbing';
+                e.stopPropagation();
+            };
+            
+            const move = (e)=>{
+                if (!dragging) return;
+                
+                const clientX = (e.clientX !== undefined ? e.clientX : e.touches[0].clientX);
+                const clientY = (e.clientY !== undefined ? e.clientY : e.touches[0].clientY);
+                
+                const nx = clamp(clientX - offsetX, 4, scene.clientWidth - el.offsetWidth - 4);
+                const ny = clamp(clientY - offsetY, 4, scene.clientHeight - el.offsetHeight - 4);
+                
+                el.style.left = nx + 'px';
+                el.style.top = ny + 'px';
+                
+                const obj = elementsWithAnimation.find(o=>o.el===el);
+                if (obj){
+                    obj.origX = nx;
+                    obj.origY = ny;
+                }
+            };
+            
+            const up = (e)=>{
+                dragging = false;
+                el.style.cursor='grab';
+            };
+            
+            el.addEventListener('mousedown', down);
+            el.addEventListener('touchstart', down, {passive:true});
+            window.addEventListener('mousemove', move);
+            window.addEventListener('touchmove', move, {passive:true});
+            window.addEventListener('mouseup', up);
+            window.addEventListener('touchend', up);
+        }
+        
+        function setupPointerInteractions(){
+            scene.addEventListener('pointerdown', (e)=>{
+                pointer.isDown = true;
+                pointer.x = e.clientX;
+                pointer.y = e.clientY;
+                if (e.target.classList.contains('enlarged')) {
+                    pointer.isDown = false;
+                }
+            });
+            scene.addEventListener('pointermove', (e)=>{
+                pointer.x = e.clientX;
+                pointer.y = e.clientY;
+            });
+            window.addEventListener('pointerup', ()=>{
+                pointer.isDown = false;
+            });
+        }
+        
+        function loop(){
+            const now = performance.now();
+            
+            elementsWithAnimation.forEach(obj=>{
+                try{
+                    const anim = obj.anim || {style:'none',speed:3,radius:150};
+                    
+                    if (obj.type === 'img' && obj.el.classList.contains('enlarged')) {
+                        obj.el.style.left = '50%';
+                        obj.el.style.top = '50%';
+                        obj.el.style.transform = 'translate(-50%,-50%) scale(6)';
+                        return;
+                    }
+                    
+                    switch(anim.style){
+                        case 'floating':{
+                            const t = now/1000;
+                            const yy = obj.origY + Math.sin(t * anim.speed + (anim.theta||0)) * 10;
+                            const xx = obj.origX + Math.cos(t * anim.speed + (anim.theta||0)) * 10;
+                            obj.el.style.top = yy + 'px';
+                            obj.el.style.left = xx + 'px';
+                            obj.el.style.transform = 'none';
+                        }break;
+                        case 'circle':{
+                            const t = now/1000;
+                            const r = anim.radius;
+                            const ang = (t * anim.speed) + (anim.theta||0);
+                            const offset = (obj.type === 'img' ? 55 : 0);
+                            const cx = scene.clientWidth/2;
+                            const cy = scene.clientHeight/2;
+                            const x = cx + r * Math.cos(ang) - offset;
+                            const y = cy + r * Math.sin(ang) - offset;
+                            obj.el.style.left = x + 'px';
+                            obj.el.style.top = y + 'px';
+                            obj.el.style.transform = 'none';
+                        }break;
+                        case 'earth':{
+                            anim.theta = (anim.theta || Math.random()*Math.PI*2) + 0.005 * anim.speed;
+                            anim.phi = anim.phi || (Math.PI*0.3 + (Math.random()*0.8 - 0.4));
+                            
+                            const r = anim.radius;
+                            const sx = r * Math.sin(anim.phi) * Math.cos(anim.theta);
+                            const sy = (r * Math.sin(anim.phi) * Math.sin(anim.theta)) * 0.6;
+                            
+                            const cx = scene.clientWidth/2;
+                            const cy = scene.clientHeight/2;
+                            const offset = (obj.type === 'img' ? 55 : 0);
+                            
+                            const x = cx + sx - offset;
+                            const y = cy + sy - offset;
+                            
+                            obj.el.style.left = x + 'px';
+                            obj.el.style.top = y + 'px';
+                            
+                            const zDepth = (Math.cos(anim.phi) + 1) / 2;
+                            obj.el.style.transform = `scale(${0.8 + 0.6*zDepth})`;
+                        }break;
+                        case 'rubLetters':{
+                            if (obj.type !== 'text' || !obj.letters) {
+                                obj.el.style.left = obj.origX + 'px';
+                                obj.el.style.top = obj.origY + 'px';
+                                obj.el.style.transform = 'none';
+                                return;
+                            }
+                            
+                            anim.theta = (anim.theta || Math.random()*Math.PI*2) + 0.005 * anim.speed;
+                            const r = anim.radius;
+                            const cx = scene.clientWidth/2;
+                            const cy = scene.clientHeight/2;
+                            
+                            const wordCenterSphereX = cx + r * Math.sin(anim.phi) * Math.cos(anim.theta);
+                            const wordCenterSphereY = cy + (r * Math.sin(anim.phi) * Math.sin(anim.theta)) * 0.6;
+                            const zDepthWord = (Math.cos(anim.phi) + 1) / 2;
+                            
+                            const returnSpeed = 0.06;
+                            
+                            obj.letters.forEach(letter => {
+                                const offsetFromWordCenter = letter.origX - (obj.origX - obj.centerW/2);
+                                const targetX = wordCenterSphereX - obj.centerW/2 + offsetFromWordCenter;
+                                const targetY = wordCenterSphereY - obj.centerH/2 + (letter.origY - (obj.origY - obj.centerH/2));
+                                
+                                let currentX = letter.el.offsetLeft;
+                                let currentY = letter.el.offsetTop;
+                                
+                                let pushX = 0;
+                                let pushY = 0;
+                                
+                                if (pointer.isDown){
+                                    const dx = currentX - pointer.x;
+                                    const dy = currentY - pointer.y;
+                                    const dist = Math.hypot(dx,dy) || 1;
+                                    
+                                    if (dist < 150){
+                                        const pushStrength = (150 - dist) / 150 * 200;
+                                        pushX = (dx/dist) * pushStrength;
+                                        pushY = (dy/dist) * pushStrength;
+                                    }
+                                }
+                                
+                                const finalDesiredX = targetX + pushX;
+                                const finalDesiredY = targetY + pushY;
+                                
+                                currentX += (finalDesiredX - currentX) * returnSpeed;
+                                currentY += (finalDesiredY - currentY) * returnSpeed;
+                                
+                                letter.el.style.left = currentX + 'px';
+                                letter.el.style.top = currentY + 'px';
+                                letter.el.style.transform = `scale(${0.8 + 0.6*zDepthWord})`;
+                            });
+                        }break;
+                        case 'rub':{
+                            if (pointer.isDown){
+                                const dx = obj.origX - pointer.x;
+                                const dy = obj.origY - pointer.y;
+                                const dist = Math.hypot(dx,dy) || 1;
+                                
+                                if (dist < 220){
+                                    const push = (220 - dist) / 220 * 140;
+                                    const nx = obj.origX + (dx/dist) * push;
+                                    const ny = obj.origY + (dy/dist) * push;
+                                    
+                                    obj.pushOffsetX = nx - obj.origX;
+                                    obj.pushOffsetY = ny - obj.origY;
+                                }
+                            } else {
+                                obj.pushOffsetX = obj.pushOffsetX * 0.88;
+                                obj.pushOffsetY = obj.pushOffsetY * 0.88;
+                                
+                                if (Math.abs(obj.pushOffsetX) < 0.5) obj.pushOffsetX = 0;
+                                if (Math.abs(obj.pushOffsetY) < 0.5) obj.pushOffsetY = 0;
+                            }
+                            
+                            obj.el.style.left = (obj.origX + (obj.pushOffsetX||0)) + 'px';
+                            obj.el.style.top = (obj.origY + (obj.pushOffsetY||0)) + 'px';
+                            obj.el.style.transform = 'none';
+                        }break;
+                        case 'zoom':{
+                            const t = now/1000;
+                            const s = 1 + 0.25 * Math.sin(t * anim.speed + (anim.theta||0));
+                            obj.el.style.transform = `scale(${s})`;
+                        }break;
+                        case 'wave':{
+                            const t = now/1000;
+                            const dx = Math.sin(t * anim.speed + (anim.theta||0)) * (anim.radius / 2);
+                            obj.el.style.left = (obj.origX + dx) + 'px';
+                            obj.el.style.top = obj.origY + 'px';
+                            obj.el.style.transform = 'none';
+                        }break;
+                        case 'spiral':{
+                            anim.theta = (anim.theta || 0) + 0.03 * anim.speed;
+                            const t = now/1000;
+                            const r = (anim.radius/2) * (0.5 + 0.5*Math.sin(t*0.5));
+                            const x = obj.origX + r * Math.cos(anim.theta);
+                            const y = obj.origY + r * Math.sin(anim.theta);
+                            obj.el.style.left = x + 'px';
+                            obj.el.style.top = y + 'px';
+                            obj.el.style.transform = 'none';
+                        }break;
+                        case 'none':default:
+                            if (!obj.letters) {
+                                obj.el.style.left = obj.origX + 'px';
+                                obj.el.style.top = obj.origY + 'px';
+                                obj.el.style.transform = 'none';
+                            }
+                            break;
+                    }
+                } catch(err){
+                    console.error('Animation error:', err);
+                }
+            });
+            requestAnimationFrame(loop);
+        }
+        
+        function createText(content, isInitial=false){
+            if (!isInitial && !checkSubscriptionGating()) return;
+            
+            const el = document.createElement('div');
+            el.className = 'text';
+            el.textContent = content;
+            
+            const x = Math.floor(Math.random()*(scene.clientWidth - 160) + 40);
+            const y = Math.floor(Math.random()*(scene.clientHeight - 160) + 40);
+            
+            el.style.left = x + 'px';
+            el.style.top = y + 'px';
+            scene.appendChild(el);
+            
+            const id = elementsWithAnimation.length;
+            const anim = {style: 'floating', speed: 3, radius: 150,
+                        theta: Math.random()*Math.PI*2, phi: Math.random()*Math.PI};
+            
+            elementsWithAnimation.push({id, el, type:'text',
+                origX: x, origY: y,
+                anim, disabledDrag: false, pushOffsetX:0, pushOffsetY:0, letters: null});
+            
+            makeDraggable(el);
+            updateElementList();
+            return el;
+        }
+        
+        function updateElementList(){
+            const currentTextId = $('selectText').value;
+            $('multiSelectList').innerHTML = '';
+            $('selectText').innerHTML = '';
+            
+            elementsWithAnimation.forEach((obj, idx)=>{
+                const row = document.createElement('div');
+                row.className = 'ms-row';
+                const cb = document.createElement('input');
+                cb.type='checkbox';
+                cb.value = idx;
+                const label = document.createElement('label');
+                label.textContent = obj.type === 'text' ? obj.el.textContent.trim() || '[Empty Text]' : '[Image]';
+                
+                row.appendChild(cb);
+                row.appendChild(label);
+                $('multiSelectList').appendChild(row);
+                
+                if (obj.type === 'text'){
+                    const opt = document.createElement('option');
+                    opt.value = idx;
+                    opt.textContent = obj.el.textContent.trim() || '[Empty Text]';
+                    $('selectText').appendChild(opt);
+                }
+            });
+            
+            if ($('selectText').querySelector(`option[value="${currentTextId}"]`)) {
+                $('selectText').value = currentTextId;
+            } else if ($('selectText').options.length > 0) {
+                $('selectText').value = $('selectText').options[0].value;
+            }
+            
+            $('selectText').dispatchEvent(new Event('change'));
+        }
+        
+        function updateEditFields(){
+            const idx = $('selectText').value;
+            const obj = elementsWithAnimation[idx];
+            
+            if (obj && obj.type === 'text'){
+                $('editTextContent').value = obj.el.textContent.trim();
+                $('livePreviewText').textContent = obj.el.textContent.trim() || '...';
+            } else {
+                $('editTextContent').value = 'Select Text Element Above';
+                $('livePreviewText').textContent = 'Select Text Element Above';
+            }
+        }
+        
+        function updateLivePreview(){
+            const v = $('editTextContent').value;
+            $('livePreviewText').textContent = v || '...';
+            
+            const idx = $('selectText').value;
+            const obj = elementsWithAnimation[idx];
+            if (obj && obj.type === 'text' && obj.anim.style !== 'rubLetters'){
+                obj.el.textContent = v || ' ';
+            }
+        }
+        
+        function updateTextContent(){
+            const idx = $('selectText').value;
+            if (idx === '') return alert('Please choose a text element to edit.');
+            
+            const v = $('editTextContent').value.trim();
+            if (!v) return alert('Please enter new text content.');
+            
+            const obj = elementsWithAnimation[idx];
+            if (obj && obj.type === 'text'){
+                obj.el.textContent = v;
+                if (obj.anim.style === 'rubLetters') {
+                    initializeLetters(obj);
+                }
+                updateElementList();
+                alert('Text Updated Successfully!');
+            }
+        }
+        
+        function removeSelectedElement(){
+            const idx = $('selectText').value;
+            if (idx === '') return alert('Please choose an element to remove.');
+            
+            const obj = elementsWithAnimation[idx];
+            if (obj){
+                removeLetterElements(obj);
+                scene.removeChild(obj.el);
+                
+                // If removing an image, remove its URL from storage
+                if (obj.type === 'img') {
+                    const storedUrls = JSON.parse(localStorage.getItem('uploadedImageUrls') || '[]');
+                    const updatedUrls = storedUrls.filter(url => url !== obj.el.src);
+                    localStorage.setItem('uploadedImageUrls', JSON.stringify(updatedUrls));
+                }
+
+                elementsWithAnimation.splice(idx,1);
+                updateElementList();
+                alert('Element Removed.');
+            }
+        }
+        
+        // --- New function to create image element from Cloudinary URL ---
+        function createImageFromCloudinaryUrl(url){
+            const img = new Image();
+            img.src = url;
+            
+            img.onload = ()=>{
+                img.className = 'uploadedImage';
+                const x = Math.floor(Math.random()*(scene.clientWidth - 160) + 40);
+                const y = Math.floor(Math.random()*(scene.clientHeight - 160) + 40);
+                
+                img.style.left = x + 'px';
+                img.style.top = y + 'px';
+                
+                img.addEventListener('click', (ev)=> {
+                    img.classList.toggle('enlarged');
+                    ev.stopPropagation();
+                });
+                
+                scene.appendChild(img);
+                
+                const id = elementsWithAnimation.length;
+                const anim = {style: 'floating', speed: 3, radius: 150,
+                            theta: Math.random()*Math.PI*2, phi: Math.random()*Math.PI};
+                
+                elementsWithAnimation.push({id, el: img, type:'img',
+                    origX: x, origY: y,
+                    anim, disabledDrag: false, pushOffsetX:0, pushOffsetY:0});
+                
+                makeDraggable(img);
+                updateElementList();
+            };
+            
+            img.onerror = () => alert('Error loading image from Cloudinary.');
+        }
+
+        function onUploadClick(){
+            if (!isSubscribed) {
+                alert('This feature is for subscribed users only. Please subscribe to upload photos.');
+                showSubscriptionModal();
+                return;
+            }
+            const pw = prompt('Enter password to upload (Hint: 1234):');
+            if (pw !== '1234') {
+                alert('Incorrect password. Upload aborted.');
+                return;
+            }
+            $('fileInput').value = '';
+            $('fileInput').click();
+        }
+        
+        // --- Cloudinary Upload Logic for Images (Updated) ---
+        async function onImageFilesSelected(e){
+            const files = Array.from(e.target.files || []);
+            
+            for (const file of files) {
+                if (!file.type.startsWith('image/')) {
+                    alert(`❌ Skipping non-image file: ${file.name}`);
+                    continue;
+                }
+                
+                // Show a temporary visual for upload
+                const tempEl = document.createElement('div');
+                tempEl.textContent = `Uploading ${file.name}...`;
+                tempEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.8);padding:15px;border-radius:10px;z-index:9999;color:yellow;';
+                document.body.appendChild(tempEl);
+
+                const formData = new FormData();
+                formData.append('mediaFile', file);
+                
+                try {
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        const publicUrl = data.publicUrl;
+                        
+                        // 1. Create the Image element on the scene
+                        createImageFromCloudinaryUrl(publicUrl);
+                        
+                        // 2. Persist the URL (for refresh/reload)
+                        const storedUrls = JSON.parse(localStorage.getItem('uploadedImageUrls') || '[]');
+                        storedUrls.push(publicUrl);
+                        localStorage.setItem('uploadedImageUrls', JSON.stringify(storedUrls));
+
+                        tempEl.textContent = `✅ Uploaded: ${file.name}`;
+                        tempEl.style.color = '#00ff00';
+                        setTimeout(() => document.body.removeChild(tempEl), 1500);
+
+                    } else {
+                        tempEl.textContent = `❌ Failed: ${file.name} - ${data.message}`;
+                        tempEl.style.color = 'red';
+                        setTimeout(() => document.body.removeChild(tempEl), 3000);
+                        console.error('Cloudinary Upload Failed:', data);
+                    }
+                } catch (error) {
+                    tempEl.textContent = `❌ Network Error: ${file.name}`;
+                    tempEl.style.color = 'red';
+                    setTimeout(() => document.body.removeChild(tempEl), 3000);
+                    console.error('Frontend Image Upload Error:', error);
+                }
+            }
+        }
+        
+        function buildSharePayload(){
+            const textsData = elementsWithAnimation.filter(o=>o.type==='text').map(o=>({
+                text: o.el.textContent,
+                left: o.letters ? (o.origX - o.centerW/2) : o.origX,
+                top: o.letters ? (o.origY - o.centerH/2) : o.origY,
+                anim: o.anim.style
+            }));
+            
+            // --- UPDATED: Use the Cloudinary URL from the image element's src ---
+            const imgsData = elementsWithAnimation.filter(o=>o.type==='img').map(o=>({
+                src: o.el.src, // This now holds the Cloudinary public URL
+                left: o.origX,
+                top: o.origY,
+                anim: o.anim.style
+            }));
+            
+            // --- UPDATED: Music URL now points to Cloudinary ---
+            const musicURL = localStorage.getItem('currentMusicURL'); // This is the Cloudinary public URL
+            const musicName = localStorage.getItem('currentMusicName');
+            
+            return {
+                title: $('mainTitle').textContent, 
+                texts: textsData, 
+                images: imgsData, 
+                music: musicURL ? {url: musicURL, name: musicName} : null
+            };
+        }
+
+        // ---------------------------------------------------------------------
+        // TinyURL and Web Share API Integration (Preserved)
+        // ---------------------------------------------------------------------
+
+        /**
+         * Generates the long share URL, then shortens it using TinyURL API.
+         * @returns {Promise<string>} The shortened URL, or the long URL if TinyURL fails.
+         */
+        async function getShortShareLink() {
+            const payload = buildSharePayload();
+            const encoded = encodeURIComponent(JSON.stringify(payload));
+            const longURL = location.origin + location.pathname + '?share=' + encoded;
+
+            try {
+                const apiURL = 'https://api.tinyurl.com/create';
+                const headers = {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${TINYURL_API_KEY}`
+                };
+                const body = JSON.stringify({
+                    url: longURL,
+                    domain: 'tinyurl.com'
+                });
+
+                const response = await fetch(apiURL, {
+                    method: 'POST',
+                    headers: headers,
+                    body: body
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.data && data.data.tiny_url) {
+                    console.log('TinyURL successful:', data.data.tiny_url);
+                    return data.data.tiny_url;
+                } else {
+                    console.error('TinyURL API failed:', data);
+                    // Fallback to the long URL
+                    return longURL;
+                }
+            } catch (error) {
+                console.error('TinyURL API request error:', error);
+                // Fallback to the long URL on network or unexpected error
+                return longURL;
+            }
+        }
+
+        /**
+         * Main function to handle sharing logic.
+         * Tries to use Web Share API with the short link, then falls back to showing the modal.
+         */
+        async function shareCreationHandler() {
+            // Display a temporary message while fetching/shortening
+            $('sendOption').textContent = '⏳ Generating Link...';
+            
+            const finalShareURL = await getShortShareLink();
+            SHARE_URL = finalShareURL; // Update global variable for modal usage
+
+            $('sendOption').textContent = '📤 Share View-Only Link'; // Reset button text
+
+            const shareData = {
+                title: $('mainTitle').textContent,
+                text: `Check out this special message for you: "${$('mainTitle').textContent}"!`,
+                url: finalShareURL
+            };
+
+            // 1. Try Web Share API (native share dialog)
+            if (navigator.share) {
+                try {
+                    await navigator.share(shareData);
+                    console.log('Native share successful');
+                    // Do not show the modal if native share is successful
+                    return; 
+                } catch (err) {
+                    // User dismissed the share dialog or error occurred (e.g., sharing to unsupported target)
+                    if (err.name !== 'AbortError') {
+                        console.error('Web Share API failed:', err);
+                    }
+                    // Fall through to show the modal as the fallback
+                }
+            }
+
+            // 2. Fallback: Show the custom share modal with the short link
+            showShareModal();
+        }
+
+        /**
+         * Shows the custom share modal (now called as a fallback).
+         */
+        function showShareModal(){
+            // SHARE_URL is already updated by shareCreationHandler()
+            $('shareModal').style.display = 'flex';
+            $('qrCodeContainer').style.display = 'none';
+            $('downloadQrBtn').style.display = 'none';
+            $('qrCodeBtn').textContent = '💖 Generate QR';
+        }
+
+        /**
+         * Copies the short link (stored in SHARE_URL) to the clipboard.
+         */
+        function copyShareLink(){
+            if (!SHARE_URL) {
+                alert('Share link not yet generated. Please wait a moment.');
+                return;
+            }
+
+            navigator.clipboard.writeText(SHARE_URL).then(()=>{
+                $('copyLinkBtn').textContent = '✅ Copied!';
+                setTimeout(()=> $('copyLinkBtn').textContent = '🔗 Copy Link', 1500);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+                alert('Failed to copy link. Please manually copy this URL: ' + SHARE_URL);
+            });
+        }
+        
+        function drawHeartQr(url, canvasElement, size) {
+            const ctx = canvasElement.getContext('2d');
+            canvasElement.width = size;
+            canvasElement.height = size;
+            const center = size / 2;
+            let qrData;
+            
+            try {
+                const tempContainer = document.createElement('div');
+                tempContainer.style.width = `${size}px`;
+                tempContainer.style.height = `${size}px`;
+                tempContainer.style.position = 'absolute';
+                tempContainer.style.visibility = 'hidden';
+                document.body.appendChild(tempContainer);
+                
+                new QRCode(tempContainer, {
+                    text: url,
+                    width: size,
+                    height: size,
+                    colorDark: '#000000',
+                    colorLight: '#ffffff',
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                const qrCanvas = tempContainer.querySelector('canvas');
+                const qrImage = new Image();
+                qrImage.src = qrCanvas.toDataURL();
+                document.body.removeChild(tempContainer);
+                
+                qrImage.onload = function() {
+                    ctx.clearRect(0, 0, size, size);
+                    
+                    const scale = size / 220;
+                    ctx.beginPath();
+                    const startX = center;
+                    const startY = center + 50 * scale;
+                    
+                    ctx.moveTo(startX, startY);
+                    ctx.bezierCurveTo(startX - 75 * scale, startY - 70 * scale,
+                                    startX - 100 * scale, startY - 100 * scale,
+                                    startX, startY - 170 * scale);
+                    ctx.bezierCurveTo(startX + 100 * scale, startY - 100 * scale,
+                                    startX + 75 * scale, startY - 70 * scale,
+                                    startX, startY);
+                    ctx.closePath();
+                    
+                    ctx.save();
+                    ctx.clip();
+                    ctx.drawImage(qrImage, 0, 0, size, size);
+                    ctx.restore();
+                    
+                    ctx.strokeStyle = 'var(--accent)';
+                    ctx.lineWidth = 8;
+                    ctx.stroke();
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.beginPath();
+                    const innerScale = size / 1000;
+                    ctx.moveTo(center, center + 40 * innerScale);
+                    ctx.bezierCurveTo(center - 20 * innerScale, center - 20 * innerScale,
+                                    center - 50 * innerScale, center - 100 * innerScale,
+                                    center, center - 130 * innerScale);
+                    ctx.bezierCurveTo(center + 50 * innerScale, center - 100 * innerScale,
+                                    center + 20 * innerScale, center - 20 * innerScale,
+                                    center, center + 40 * innerScale);
+                    ctx.fill();
+                };
+            } catch (e) {
+                console.error("QR Code generation failed:", e);
+                ctx.fillStyle = '#ff0000';
+                ctx.fillRect(0, 0, size, size);
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.fillText('QR Error', center, center);
+            }
+        }
+        
+        async function toggleQrCode(){
+            if (!SHARE_URL) {
+                alert('Please wait while the share link is generated. Try again in a moment.');
+                await shareCreationHandler(); // Attempt to force link generation
+                if (!SHARE_URL) return;
+            }
+            
+            const qrCanvas = $('qrCanvas');
+            const qrContainer = $('qrCodeContainer');
+            const downloadBtn = $('downloadQrBtn');
+            const btn = $('qrCodeBtn');
+            
+            if (qrContainer.style.display === 'block'){
+                btn.textContent = '💖 Generate QR';
+                qrContainer.style.display = 'none';
+                downloadBtn.style.display = 'none';
+            } else {
+                btn.textContent = 'Hide QR Code';
+                qrContainer.style.display = 'flex';
+                downloadBtn.style.display = 'block';
+                drawHeartQr(SHARE_URL, qrCanvas, 200);
+            }
+        }
+        
+        function downloadQrCode() {
+            const qrCanvas = $('qrCanvas');
+            const imageURL = qrCanvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+            const link = document.createElement('a');
+            link.download = 'Purba_Personalized_Heart_QR.png';
+            link.href = imageURL;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        function shareToPlatform(platform){
+            if (!SHARE_URL) {
+                alert('Share link not yet generated. Please wait a moment.');
+                return;
+            }
+            
+            const text = encodeURIComponent(`Check out this special message for you: "${$('mainTitle').textContent}"! Click the link to view:`);
+            let url = '';
+            
+            switch(platform){
+                case 'whatsapp':
+                    url = `https://wa.me/?text=${text} ${encodeURIComponent(SHARE_URL)}`;
+                    break;
+                case 'facebook':
+                    // Note: Facebook Sharer is best practice, but doesn't always use the 'quote' (text) well
+                    url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}&quote=${text}`;
+                    break;
+                case 'twitter':
+                    url = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(SHARE_URL)}`;
+                    break;
+                case 'insta':
+                    alert("For Instagram: Copy the link and share it in your bio or stories, as direct sharing isn't possible from a website.");
+                    return;
+                default:
+                    return;
+            }
+            
+            window.open(url, '_blank', 'width=600,height=400');
+        }
+
+        // ---------------------------------------------------------------------
+        // End TinyURL and Web Share API Integration
+        // ---------------------------------------------------------------------
+
+        function loadFromShare(payload){
+            scene.innerHTML = '';
+            elementsWithAnimation = [];
+            
+            if (payload.title) {
+                $('mainTitle').textContent = payload.title;
+            }
+            
+            sideMenu.style.display = 'none';
+            hamburger.style.display = 'none';
+            $('viewNotice').style.display = 'block';
+            $('viewNotice').textContent = "Viewing shared scene (read-only). Tap an image to enlarge.";
+            
+            if (payload.music && payload.music.url) {
+                websiteMusic.src = payload.music.url;
+                musicToggleBtn.style.display = 'block';
+                musicToggleBtn.setAttribute('title', `Play Music: ${payload.music.name || 'Untitled Track'}`);
+                websiteMusic.muted = true;
+                
+                const playPromise = websiteMusic.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(_ => {}).catch(error => {
+                        console.log("Muted auto-play prevented. User click required.");
+                    });
+                }
+                
+                musicToggleBtn.addEventListener('click', ()=>{
+                    if (websiteMusic.muted) {
+                        websiteMusic.muted = false;
+                    }
+                    toggleMusicPlayback();
+                });
+            } else {
+                musicToggleBtn.style.display = 'none';
+            }
+            
+            (payload.texts||[]).forEach((t, idx)=>{
+                const el = document.createElement('div');
+                el.className='text';
+                el.textContent = t.text;
+                el.style.left = (t.left||50) + 'px';
+                el.style.top = (t.top||50) + 'px';
+                scene.appendChild(el);
+                
+                const obj = {id:elementsWithAnimation.length, el, type:'text', origX: t.left||50, origY: t.top||50, anim:{style:t.anim||'none',speed:3,radius:150, theta: Math.random()*Math.PI*2, phi: Math.random()*Math.PI}, letters: null};
+                elementsWithAnimation.push(obj);
+                
+                if (obj.anim.style === 'rubLetters') {
+                    const tempContainer = document.createElement('span');
+                    tempContainer.style.whiteSpace = 'nowrap';
+                    tempContainer.style.position = 'absolute';
+                    tempContainer.style.visibility = 'hidden';
+                    const computedStyle = getComputedStyle(el);
+                    tempContainer.style.fontSize = computedStyle.fontSize;
+                    tempContainer.style.fontWeight = computedStyle.fontWeight;
+                    tempContainer.textContent = t.text;
+                    document.body.appendChild(tempContainer);
+                    const wordWidth = tempContainer.offsetWidth;
+                    const wordHeight = parseFloat(computedStyle.fontSize);
+                    document.body.removeChild(tempContainer);
+                    
+                    obj.centerW = wordWidth;
+                    obj.centerH = wordHeight;
+                    obj.origX = obj.origX + wordWidth / 2;
+                    obj.origY = obj.origY + wordHeight / 2;
+                    initializeLetters(obj);
+                }
+            });
+            
+            (payload.images||[]).forEach((it)=>{
+                const img = new Image();
+                img.src = it.src;
+                img.className='uploadedImage';
+                
+                img.onload = ()=>{
+                    img.style.width = '110px';
+                    img.style.height = 'auto';
+                };
+                img.onerror = () => {
+                    img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="110" height="110"><rect width="110" height="110" fill="#333"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="12" fill="#fff">Image Failed</text></svg>';
+                };
+                
+                img.style.left = (it.left||60) + 'px';
+                img.style.top = (it.top||60) + 'px';
+                img.addEventListener('click', (ev)=> {
+                    img.classList.toggle('enlarged');
+                    ev.stopPropagation();
+                });
+                scene.appendChild(img);
+                
+                elementsWithAnimation.push({id: elementsWithAnimation.length, el:img, type:'img', origX: it.left||60, origY: it.top||60, anim:{style:it.anim||'none',speed:3,radius:150, theta: Math.random()*Math.PI*2, phi: Math.random()*Math.PI}});
+            });
+            
+            const heartsColorsLocal = ["💖","💙","💚","💛","💜","🧡","❤️"];
+            for (let i=0;i<30;i++){
+                const h = document.createElement('div');
+                h.className='heart';
+                h.textContent = heartsColorsLocal[Math.floor(Math.random()*heartsColorsLocal.length)];
+                h.style.left = (Math.random()*scene.clientWidth) + 'px';
+                h.style.top = (Math.random()*scene.clientHeight) + 'px';
+                scene.appendChild(h);
+            }
+        }
+        
+        function startViewer(){
+            elementsWithAnimation.forEach(obj=>{
+                obj.disabledDrag = (obj.anim.style !== 'rub');
+            });
+            requestAnimationFrame(loop);
+        }
+    </script>
+</body>
+</html>
